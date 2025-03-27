@@ -11,7 +11,7 @@ class Program
 
         while (baseWord.Length < 8 || baseWord.Length > 30)
         {
-            Console.WriteLine("Неверный длина слова. Введите другое:");
+            Console.WriteLine("Неверная длина слова. Введите другое:");
             baseWord = Console.ReadLine().ToLower();
         }
 
