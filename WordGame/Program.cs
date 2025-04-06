@@ -1,80 +1,34 @@
-﻿using System;
+﻿using System.Globalization;
 
 namespace WordGame 
-{
-class Program
-{
-    static void Main()
+{   class Program
     {
-        Console.WriteLine("Введите слово длинной от 8 до 30 символов:");
-        string baseWord = Console.ReadLine().ToLower();
-
-        while (baseWord.Length < 8 || baseWord.Length > 30)
-        {
-            Console.WriteLine("Неверная длина слова. Введите другое:");
-            baseWord = Console.ReadLine().ToLower();
+        static void Main() {
+            SetLanguage();
+            Game game = new Game();
+            game.Start();
         }
 
-        char[] symbolsOfBaseWord = baseWord.ToCharArray();
-        string usedWords = "";
-        bool player1Turn = true;
-
-        while (true)
+        private static void SetLanguage()
         {
-            Console.WriteLine(player1Turn ? "Ход 1 игрока" : "Ход 2 игрока");
-            string inputWord = Console.ReadLine().ToLower();
+            Console.WriteLine("Choose your language:");
+            Console.WriteLine("1. Russian");
+            Console.WriteLine("2. English");
+            string choice = Console.ReadLine();
 
-            if (String.IsNullOrEmpty(inputWord)) {
-                Console.WriteLine(player1Turn ? "1 игрок не ввёл слово, он проиграл" : "2 игрок не ввёл слово, он проиграл");
-                break;
-            }
-
-            if (usedWords.Contains(inputWord))
+            switch (choice)
             {
-                Console.WriteLine("Это слово уже использовалось. Введите другое слово:");
-                continue;
-            }
-
-            if (!CanFormWord(inputWord, symbolsOfBaseWord)) {
-                Console.WriteLine("Введено неверное слово: такой буквы нет или она уже использована. Введите другое слово:");
-                continue;
-            }
-
-            usedWords += inputWord;
-            player1Turn = !player1Turn;
-
-        }
-
-        static bool CanFormWord(string word, char[] availableSymbols)
-        {
-            char[] cloneAvaliableSymb = (char[])availableSymbols.Clone();
-            bool allLettersFound = true;
-
-            foreach (char symbol in word) {
-
-                bool letterFound = false;
-
-                for (int i = 0; i < cloneAvaliableSymb.Length; i++)
-                {
-                    if (cloneAvaliableSymb[i] == symbol) {
-                        cloneAvaliableSymb[i] = ' ';
-                        letterFound = true;
-                        break;
-                    }
-                }
-                if (!letterFound)
-                {
-                    allLettersFound = false;
+                case "1":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru");
                     break;
-                }
+                case "2":
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
+                    break;
+                default:
+                    Console.WriteLine("Wrong choice, setting default language - English.");
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru");
+                    break;
             }
-
-            return allLettersFound;
-
         }
-
-
     }
-}
-
 }
